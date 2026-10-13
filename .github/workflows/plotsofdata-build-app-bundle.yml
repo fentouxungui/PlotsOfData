@@ -145,8 +145,8 @@ jobs:
             txt <- paste(unlist(lapply(sf, function(f) tryCatch(readLines(f, warn = FALSE), error = function(e) character()))), collapse = "\n")
             grab <- function(pat) { x <- regmatches(txt, gregexpr(pat, txt))[[1]]; if (length(x)) gsub("[()\"']", "", sub(".*?(library|require)", "", x)) else character() }
             seed <- unique(c(grab("library\\([A-Za-z0-9._\"']+"), grab("require\\([A-Za-z0-9._\"']+"),
-                             sub("::.*$", "", regmatches(txt, gregexpr("([A-Za-z][A-Za-z0-9._]+)::", txt))[[1]])),
-                             split_pkgs(Sys.getenv("EXTRA_PKGS")), "shiny")
+                             sub("::.*$", "", regmatches(txt, gregexpr("([A-Za-z][A-Za-z0-9._]+)::", txt))[[1]]),
+                             split_pkgs(Sys.getenv("EXTRA_PKGS")), "shiny"))
           } else if (mode == "package-fn") {
             dcf <- read.dcf(file.path(pkgroot, "DESCRIPTION")); pkg_name <- unname(dcf[1, "Package"])
             writeLines(c(opt(), Sys.getenv("ENTRY_FN")), file.path(appdir, "app.R"))
